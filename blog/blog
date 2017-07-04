@@ -1,0 +1,132 @@
+Screen Shot 2017-05-03 at 10.21.19 PM
+Abstract:
+
+This is an interactive hospital recommendation APP implemented in R using Shiny. This shiny App is aiming to help patient select hospitals to receive high-quality care with reasonable co-payment. Users will be provided direct out of pocket cost of certain procedure and quality index of hospitals to find out the best options according to their personal health conditions and budgets.  
+
+Background & Data introduction:
+
+1) What is Medicare: Medicare is the federal health insurance program for people who are 65 or older, certain younger people with disabilities, and people with End-Stage Renal Disease.
+
+2) Medicare hospital quality data: The overall rating summarizes up to 57 quality measures over 3,000 U.S. Hospitals. The overall rating ranges from one to five stars. The more stars, the better a hospital performed on the available quality measures.
+
+3) Medicare inpatient charge data: The data include hospital-specific charges for the more than 3,000 U.S. hospitals that receive Medicare Inpatient Prospective Payment System payments for discharges paid under Medicare based on a rate per discharge using the Medicare Severity Diagnosis Related Group (MS-DRG) for Fiscal Year (FY) 2011, 2012, 2013, and 2014.
+
+
+
+Motivation: Why I made this Medicare recommendation application
+
+1) Hospital billing varies widely but quality has nothing to do with it:
+
+Screen Shot 2017-04-30 at 10.47.28 PM
+Best quality hospitals aren’t necessarily high-priced, but hospitals with worst quality of care sometimes are.
+The report 'Medicare Provider Utilization and Payment Data', which released by CMS has shown huge inequities in hospital charges. Take total joint replacement as an example, prices of this procedure ranges from $5,304 in Ada, Oklahoma, to $223,373 in Monterey, California. [1] However, unlike the common sense: the more expensive, the better quality, Healthcare charge is barely related to the quality of cares. When conducting analysis on the CMS quality and cost data, it is not hard to find out that best quality hospitals aren’t necessarily high-priced, but hospitals with worst quality of care sometimes are.
+
+2) Information is highly non-transparent and isolated. Patient hard to make wise decision:
+
+Patients are an insecure group of people as their lives may get threatened by receiving failed care, along with breathtaking six-figure hospital bills. The whole healthcare market is like a 'Black Box', where price information is almost entirely blocked from customers. Although quality information is available online, it is hard to guarantee the authenticity. More questionable, cost and quality information were never put together, which made patients stay far away from making wise decision.
+
+3) Why do we need Medicare hospital recommendation application:
+Based on aforementioned problem, an application allowing patients to compare cost and quality information over different hospitals seems to be an effective solution of this problem. This Medicare hospital recommendation system assembling 100+ DRGs' cost information and quality rating information over 3000 hospitals is able to bridge patient's demand with the most suitable hospitals and allow patients to setup appropriate expectation on how much one would pay down the road.
+
+
+
+Data visualization: Getting insight of hospital quality and cost with RDA.
+
+RDA is crucial in the process of decision making. In this paragraph, I will conduct analysis on hospital type, cost - quality comparison, DRG - cost comparison to get a deeper insight of data.
+
+Hospital quick facts:
+
+Screen Shot 2017-05-03 at 11.42.53 PM
+
+
+TX (407 hospitals) and CA (341 hospitals) are top states with the most hospitals: It is unsurprisingly to see TX and CA are the top 2 states as they are the largest and well developed states. The third place - FL has much less hospitals (186) comparing with CA.
+
+
+Central part of US has the highest number of hospital bed per 1000 capita: District of Columbia, South Dakota and North Dakota are the top 3 states with the most hospital beds per 1000 capita (on average 4.7 beds / 1k capita). However it is interesting to see TX only has 2.3 beds/1k capita (ranked No.23/50) and CA has 1.8 beds/1k capita (ranked No.48/50). Even though CA and TX have the ability to provide advancing healthcare services, chances you have to wait for a longer time are much larger than Central area of U.S. [citation 2]
+
+
+60% of U.S. hospitals are voluntary not for profit: The CMS dataset contains 10 hospitals types as shown in figure 3. I  further grouped them into 3 categories : Voluntary non-for-profit, Government and Other, with 60% hospitals falling into the first bucket.  This phenomenon is actually driven by the more profitable not for profit business. In the U.S. healthcare industry, being nonprofit is more lucrative than being for-profit as it is getting preferential tax treatment.  [citation 3]
+
+
+Northeastern part of U.S. has higher proportion of voluntary not for profit hospitals: It is interesting to find out the voluntary not-for-profit hospitals density rates vary dramatically over states. DW has 100% NFP hospitals , while WY only has 11%. When we geographically visualize the data, it's not hard find out the trend that NFP hospitals are more concentrated in northeastern part of U.S.. This phenomenon is likely caused by the different state tax policies. [Figure]
+
+
+
+Number of hospitals in each states [1]
+
+Hospital quality analysis:
+
+ Hospital quality ratings are normally distributed with 37% (1774) 3-star hospitals and only 2% (82) 5-star hospitals: [figure] The new overall star ratings take the existing measurements reported on Hospital Compare, and summarize them into a a single star-based rating for a hospital.  In spite of the 1223 un-rated hospitals, the rest quality ratings are normally distributed with slightly left skewed. This overall star rating system also has some limitations. The American Hospital Association reportedly said the system oversimplifies the complexity of delivering high-quality health care.[citation 4] However, I still choose this dataset because this is the first hospital quality dataset released by an independent authority. Even though it may unfairly penalize some teaching hospitals and those serving the poor, it still provides a whole picture of how U.S. hospitals quality looks like. 
+Voluntary not-for-profit hospitals show slightly higher average quality rating at 3.1: Voluntary NFP hospitals has slightly higher average quality than Government owned and other type of hospitals. Even though the average rating is higher, it is unnecessarily to say NFP hospital is better as it is not show significantly different among average quality ratings.
+Central part of U.S. has higher average quality rating:  The map shows the states with higher average quality ratings are concentrated in the middle part of U.S. This map is somehow aligning with the map showing the hospital beds/1000 capita. This alignment may indicate a positive correlation between healthcare resource / 1000 capita and quality of care. [Figure correlation plot]
+Hospital cost analysis:
+
+Before diving into the cost analysis, some terminologies and questions need to be clarified below:
+
+Terminologies:
+
+Average hospital charges: Providers determine what they will charge for items, services, and procedures provided to patients and these charges are the amount that providers bill for an item, service, or procedure.
+Average medicare payments:
+Out of pocket:
+Average total payments: 
+Medicare reimbursement rate: 
+To be mentioned: 
+
+Who pays the difference between what the provider charges and Medicare pays: The provider has an agreement with Medicare to accept Medicare’s payment and the difference is not paid by Medicare or any other entity, including the beneficiary.
+What is the difference between "Average Charges" and "Average Total Payments": “Average Charges” refers to what the provider bills to Medicare. “Average Total Payments” refers to what Medicare actually pays to the provider as well as co-payment and deductible amounts that the beneficiary is responsible for and payments by third parties for coordination of benefits.
+The relationship between these 4 variables:
+
+Screen Shot 2017-05-02 at 12.40.19 AM
+
+How much should Medicare patient expect to pay for a specific DRG procedure?
+
+What is MS-DRG: A Medicare Severity-Diagnosis Related Group (MS-DRG) is a system of classifying a Medicare patient’s hospital stay into various groups in order to facilitate payment of services. The general DRG system separates all of potential human disease diagnoses into 20+ body systems, and them subdividing those systems in to 450+ groups with 750 DRGs. Fees are assessed by factoring the body system and groups affected, with the amount of hospital resources required to treat the condition. MS-DRG offers more precise diagnosis by dividing DRG into a tree-tiered system:
+ (MCC): Major complication /co-morbidity.
+ (CC): complication /co-morbidity
+ (non-CC): no complication/co-morbidity
+ Grouping 100+ MS-DRG codes into 10 categories: The CMS inpatient charge data-set only contains the 100 most frequently occurred DRGs. It is unclear why CMS only disclosed 100 DRG payment information, but the data should be enough for 90% of  application users. To facilitate the visualization, I grouped the 100 DRGs into 10 buckets based on systems, which are 'Circulate', 'Digestive', 'Infection', 'Kidney', 'Metabolism', 'Nerve', 'Ortho', 'Respiratory', 'Toxic' and 'Others'.
+Infection and Ortho procedures have the highest average total payment: Looking at the [figure], you will find the average total payments by DRG are clustered in 4 groups. Infection and ortho are the most expensive procedures, with respectively $14,240 and $14,825 average total payment. Circulate, digestive and respiratory related procedure has lower average total payment at around $9,500. Kidney, Nerve and Toxic expenses are much lower at around $7,700, followed by Metabolism and other related procedure at around $6,400. Infection and Ortho related procedures are obviously outliers in terms of total payment. Possible reasons are as follows:
+Infection can be as serious as sepsis, which may lead to multi-organ failure or even mortality. Infection especial hospital-acquired infection often require much longer length of hospital stay and therefore higher total payment.
+Orthopedic related procedure total payment often includes implant devices, which could be a big chunk of total payment. Take Total Knee Replacement (TKR) as example, the implant cost as largest associated cost could account up to 87% of the total procedure cost.
+Infection has the much higher medicare reimbursement rate: Infection related procedure has highest average Medicare reimbursement rate at 86.9%. This phenomenon is the consequence of Hospital-Acquired Condition (HAC) Reduction Program. When patient get hospital-acquired infection, which is avoidable, Medicare will take over total payment so beneficiaries don't have spent a penny on it.
+ Ortho is the most expensive procedure for Medicare beneficiaries in terms of co-payment: Ortho patients will have to pay $2,367 directly out of their pocket, while other procedures requires no more than $1,500. As the reason mentioned before, implant devices cost is the biggest chunk of total cost.
+Explore relationship between Medicare payment and service quality:
+
+1-star hospital should definitely be your LAST CHOICE: Lowest quality rating hospital usually charge the most on average ($12,554), but has the highest medicare reimbursement rate (86%).  Failed service causing higher infection rate should be the primary reason accounting for the highest Medicare coverage rate. Even though it has the highest medicare reimbursement rate, beneficiaries still have to pay the same out of pocket as they pay for the better quality service. Thus, there is no quality and cost benefit by choosing the worst. In brief, don't risk your health by going to 1 star hospital, you might lose your money and even your life.
+3,4-star hospitals might be the best choice for Medicare patients with limited budget: 3,4 star hospitals can provide Medicare patient average or above average quality of service and also charge an affordable out of pocket payment. The average total payment of Rating-3 & rating-4  hospital are relatively lower ($9,800 - $9,900) and also has a decent reimbursement rate (83%).  2-star hospital might also be a potential option when you are under emergent situation and there is no better hospitals near you, otherwise it is not recommended due to quality of service.
+Premium option - 5-star hospital: 5 star hospital will provides patients the best service but also charge the most. The average out of pocket payment is much higher than any other types of hospital, but the service definitely worth the service. Best hospitals, such as Hospital for Special Surgery and Mayo Clinic, continuously invested in quality management and acquired most sophisticated equipments and best providers to guarantee patient safety and maximize outcome. However, since there are only handful (82) 5-star hospitals in U.S. , patients may need to wait and travel across state to receive best services. Thus, 5-star hospitals are only highly recommended to Medicare patients with un-emergent health problem and sufficient budget.
+
+
+Project Scope and Deliverable:
+
+Key UI Features and Design Philosophy:
+Find the best hospital: This is the brain of the application. Medicare patients can select the input, such as DRG, location, distance and quality preference, and the 'Brain' will pin down qualified hospitals and recommend better quality and relatively lower cost hospital.
+Choose your DRG:  The first and most important input should be 'What type of procedure you want to get?'. The drop down list provided the 100 DRGs for users to choose. However, the design has two limitations:
+Patients are not familiar with DRGs: MS-DRG system is originally design for reimbursement purpose. It is undoubtedly that users without medical knowledge with get confused. It is definitely necessary to design questionnaires with plain language to help users find best described DRG.
+Only partial DRGs were listed: Only the 1oo most frequently used DRG were listed. Patient might not able to find fitted DRG. As CMS updated the dataset, more DRGs will be added.
+Your location & search hospital within X miles: This feature is designed to meet the demand of patients with emergent situation. For instance, if a patient was bone fractured in lower Manhattan and need emergent care, one can readily narrow down options to only 3 hospitals by searching within 3 miles to filter out all the other distractions. To further develop this feature, I will add with Emergent / Non-emergent situation button to enable search style switch.
+Select hospitals with X stars of quality care: According to the previous analysis, 1,2-star hospitals are not recommended. Users can filter out the lower quality hospital, which they won't consider at all. One with limited budget can also filter out 5-star hospitals to avoid unaffordable out of pocket payment.
+Cost and Quality comparison:  The reason I am calling this application a simple recommendation system is because the recommendation mechanism is based on a simple norm that patients always want better service and lower/affordable cost. The methodology used is pretty simple: Divide the two-dimensional plane (out-of pocket payment / hospital quality index) into 4 quadrants using cost median and quality median. [figure] To further differentiate , I added another 6 sub-index upon the overall quality rating to generate a new quality score with range up to 100. Here is the equation: [Figure]
+Markers & hover on Popup: The recommended hospitals will be shown on leaflet map using green markers. Dark green marker represents hospitals with better quality service and lower price. Light green marker represents better service but higher cost. Unrecommended hospital will be shown in red markers. The popup window will present detailed information, including 'Total inpatient discharge from 2011 to 2014', 'Average total payment' and 'Average medicare payment'. With these information, patient will be able to gain a comprehensive image of a hospital regarding a specific DRG.
+Explore medicare: The playground for users who want to explore Medicare data by themselves.
+Map: The map gives large flexibility for users to find useful information by changing color variable and size variable. The inspiration came from the 'SuperZip' example by Joe Cheng.
+Medicare payment analytics: This is a 2-dimensional scatter plot with points stratified by hospital types. Users can change X,Y axises to different cost variables. Regression analysis is also attached to help patient understand cost different among different hospital types. [figure]
+The Delivered Product: [Figure]
+
+
+
+
+Acknowledgement:
+
+NYC Data Science: Shu Yan
+Inspiration from the ‘SuperZip’ example by Joe Cheng
+
+
+citation 2: http://kff.org/other/state-indicator/beds-by-ownership/?activeTab=map&currentTimeframe=0&selectedDistributions=total&sortModel=%7B%22colId%22:%22Total%22,%22sort%22:%22desc%22%7D
+
+citation 3:http://www.arbiternews.com/2014/04/08/why-nonprofits-are-the-most-profitable-hospitals-in-the-us/
+
+citation 4: http://www.cnbc.com/2016/07/21/only-about-2-percent-of-the-nations-hospitals-get-5-star-quality-rating.html
+
+
+
